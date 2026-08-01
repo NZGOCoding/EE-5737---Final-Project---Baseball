@@ -20,32 +20,24 @@ library(cluster)
 ## Step 2
 # Do data filtering and backwards elimination process here
 ```{r}
-baseball <-  baseballData %>% select(-Player.name)
+baseball <-  baseballData %>% select(-Player.name, -stolen.base, -Caught.stealing) # removing unnecessary data from the original dataset
 x <- na.omit(baseball)
 sample <- sample(c(TRUE, FALSE), nrow(x), replace=TRUE, prob=c(0.7, 0.3))
 train  <- x[sample, ]
 test   <- x[!sample, ]
 md <- lm(Games~., data = train)
-stepAIC(md, direction = 'backward')
-
-y <- stepAIC(md, direction = 'backward')
-summary(y)
-```
-```{r}
-sample <- sample(c(TRUE, FALSE), nrow(baseballData), replace=TRUE, prob=c(0.7, 0.3))
-train  <- baseballData[sample, ]
-test   <- baseballData[!sample, ]
-md <- lm(Games~., data = train)
 
 # backwards elimination and graphs
-x <- stepAIC(md, direction = 'backward')
+stepAIC(md, direction = 'backward')
+y <- stepAIC(md, direction = 'backward')
 residuals <- resid(md)
 plot(residuals)
 
 # summaries 
 summary(md)
-sumary(x)
+summary(y)
 ```
+
 ## Step 3
 # Do backwards elimination process here
 
